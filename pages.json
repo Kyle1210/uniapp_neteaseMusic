@@ -13,5 +13,23 @@
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
-	"uniIdRouter": {}
+	"uniIdRouter": {},
+	// 分包
+	"subPackages": [
+		{
+			"root": "subpkg",
+			"pages": [
+				
+			{
+                    "path" : "List/List",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "歌单",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
+		}
+	]
 }
