@@ -11,7 +11,8 @@ export const request = (options) => { //暴露一个function：myRequest，使�
                 success: (res) => { //数据获取成功
                     if (res.data.code !== 200) { //因为200是返回成功的状态码，如果不等于200,则代表获取失败,
                         return uni.showToast({
-                            title: "数据获取失败！"
+                            title: "数据获取失败！",
+														icon:"error"
                         })
                     }
                     resolve(res) //成功,将数据返回

@@ -1,90 +1,128 @@
 <template>
-	<view>
-		<!-- 背景图 -->
-		<view class="fixbg"></view>
-		<!-- 列表页头 -->
+	<view class="list">
+		<!-- 列表页头 START -->
 		<view class="list-head">
-			<view class="lits-head-img">
-				<img src="../../static/logo.png" alt="">
-				<text class="iconfont icon-zuojiantou">30亿</text>
+			<!-- 左边图片部分 STRAT -->
+			<view class="list-head-img">
+				<img :src="playList.coverImgUrl" alt="">
+				<text class="iconfont icon-bofang1">{{numberTransform}}</text>
 			</view>
-			<view class="lits-head-text">
-				<view class="title"></view>
+			<!-- 左边图片部分 END -->
+			
+			<!-- 右边内容部分 START -->
+			<view class="list-head-text">
+				<view class="title">
+					<text>{{playList.name}}</text>
+				</view>
 				<view class="logo">
-					<img src="" alt="">
-					<text>网易云音乐</text>
+					<img :src="playList.creator.avatarUrl" alt="">
+					<text>{{playList.creator.nickname}}</text>
 				</view>
 				<view class="content">
-					<text>云音乐中每天热度上升最快的100首单曲，每日更新 ></text>
+					<text>{{playList.description}}</text>
 				</view>
 			</view>
+			<!-- 右边内容部分 END -->
 		</view>
+		<!-- 列表页头 END -->
 	</view>
 </template>
 
 <script>
 	import {reqGetPlayListDetail} from '@/api/listApi.js'
+	import {bigNumberTransform} from '@/utils/bigNumberTransform.js'
 	export default {
 		onLoad(options) {
-			this.playListId = options.id
-			this.getPlayListDetail()
+			this.getPlayListDetail(options.id)
 		},
 		
 		data() {
 			return {
-				playListId: null
+				playListId: null,
+				playList: []
 			};
 		},
 		
 		methods: {
 			// 获取歌单详情
-			async getPlayListDetail() {
-				const res = await reqGetPlayListDetail(this.playListId)
-				console.log(res);
+			async getPlayListDetail(playListId) {
+				const res = await reqGetPlayListDetail(playListId)
+				this.playList = res.data.playlist
+				console.log(this.playList);
+			}
+		},
+		
+		computed: {
+			// 将数字转换为千、万、亿等单位
+			numberTransform() {
+				return bigNumberTransform(this.playList.playCount)
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-.fixbg {
-	width: 100%;
-	height: 100vh;
-	position: fixed;
-	left: 0;
-	top: 0;
-	// background-image: url('@/static/logo.png');
-	// background-size: cover;
-	// background-position: center 0; 
-	// // 毛玻璃效果
-	// filter: blur(10px);
-	// // 放大容器，隐藏白边
-	// transform: scale(1.2);
-}
-
-.list-head {
-	display: flex;
-	padding: 30rpx;
-	.list-head-img {
-		width: 264rpx;
-		height: 264rpx;
-		border-radius: 30rpx;
-		overflow: hidden;
-		position: relative;
-		img {
-			width: 100%;
-			height: 100%;
+.list {
+	// background-image: var(--playList.creator.backgroundUrl);
+	.list-head {
+		margin: 70rpx 30rpx 0 30rpx;
+		display: flex;
+		.list-head-img {
+			position: relative;
+			width: 260rpx;
+			height: 260rpx;
+			border-radius: 30rpx;
+			overflow: hidden;
+			img {
+				width: 100%;
+				height: 100%;
+			}
+			text {
+				position: absolute;
+				right: 10rpx;
+				top: 10rpx;
+				color: #FFFFFF;
+				font-size: 28rpx
+			}
 		}
-		text {
-			position: absolute;
-			right: 8rxp;
-			top: 8rpx;
-			color: white;
-			font-size: 26rpx
+		.list-head-text {
+			margin-left: 45rpx;
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-evenly;
+			.title {
+				font-size: 35rpx;
+				// color: #FFFFFF;
+			}
+			.logo {
+				display: flex;
+				align-items: center;
+				img {
+					width: 53rpx;
+					height: 53rpx;
+					border-radius: 53rpx;
+					margin-right: 12rpx;
+				}
+				text {
+					font-size: 20rpx
+				}
+			}
+			.content {
+				font-size: 20rpx;
+				color: #F1CEDA;
+				text {
+					line-height: 40rpx;
+					// 超出两行...
+					text-overflow: -o-ellipsis-lastline;  
+					overflow: hidden;  
+					text-overflow: ellipsis;  
+					display: -webkit-box;  
+					-webkit-line-clamp: 2;  
+					-webkit-box-orient: vertical;
+				}
+			}
 		}
-	}
-	.list-head-text {
-		flex: 1;
 	}
 }
 </style>
