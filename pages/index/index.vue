@@ -16,7 +16,7 @@
 					</view>
 					<!-- 列表项的右侧部分 -->
 					<view class="list-item-text">
-						<view v-for="(track,index) in item.tracks">{{index+1}}.{{track.first}} - {{track.second}}</view>
+						<view v-for="(track,index) in item.tracks" :key="index">{{index+1}}.{{track.first}} - {{track.second}}</view>
 					</view>
 				</view>
 			</view>

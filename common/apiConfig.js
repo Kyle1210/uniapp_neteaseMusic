@@ -18,7 +18,8 @@ export const request = (options) => { //暴露一个function：myRequest，使�
                 },
                 fail: (err) => { //失败操作
                     uni.showToast({
-                        title: "请求接口失败！"
+                        title: "请求接口失败！",
+												icon:"error"
                     })
                     reject(err)
                 }
