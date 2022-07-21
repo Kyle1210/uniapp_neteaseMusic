@@ -132,7 +132,7 @@
 		background-image: url(../../static/logo.png);
 		background-size: cover;
 		background-position: center 0;
-		filter: blur(10rpx);
+		filter: blur(20rpx);
 		transform: scale(1.2);
 	}
 	.list-head {
