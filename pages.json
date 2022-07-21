@@ -29,6 +29,15 @@
                 }
                 
                 }
+                ,{
+                    "path" : "detail/detail",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "歌曲详情",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
             ]
 		}
 	]

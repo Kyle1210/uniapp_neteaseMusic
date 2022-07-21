@@ -1,5 +1,5 @@
 <template>
-	<view class="list">
+	<view class="list" v-if="showPage">
 		
 		<!-- 背景图 START -->
 		<view class="fixbg" :style="{'background-image': `url(${playList.coverImgUrl})`}"></view>
@@ -45,55 +45,19 @@
 				<text class="iconfont icon-bofang1">
 					<text>播放全部</text>
 				</text>
-				<text class="count">(共100首)</text>
+				<text class="count">(共{{playList.trackCount}}首)</text>
 			</view>
-			<view class="music-list-item">
+			<view class="music-list-item" v-for="(item,index) in playList.tracks" :key="item.id" @click="goToDetail(item.id)">
 				<view class="index">
-					1
+					{{index+1}}
 				</view>
 				<view class="text">
-					<view class="music-name">关于你</view>
-					<view class="author">薛之谦</view>
-				</view>
-				<view class="iconfont icon-bofang1"></view>
-			</view>
-			<view class="music-list-item">
-				<view class="index">
-					1
-				</view>
-				<view class="text">
-					<view class="music-name">关于你</view>
-					<view class="author">薛之谦</view>
-				</view>
-				<view class="iconfont icon-bofang1"></view>
-			</view>
-			<view class="music-list-item">
-				<view class="index">
-					1
-				</view>
-				<view class="text">
-					<view class="music-name">关于你</view>
-					<view class="author">薛之谦</view>
-				</view>
-				<view class="iconfont icon-bofang1"></view>
-			</view>
-			<view class="music-list-item">
-				<view class="index">
-					1
-				</view>
-				<view class="text">
-					<view class="music-name">关于你</view>
-					<view class="author">薛之谦</view>
-				</view>
-				<view class="iconfont icon-bofang1"></view>
-			</view>
-			<view class="music-list-item">
-				<view class="index">
-					1
-				</view>
-				<view class="text">
-					<view class="music-name">关于你</view>
-					<view class="author">薛之谦</view>
+					<view class="music-name">{{item.name}}</view>
+					<view class="author">
+						<img src="../../static/sq.png" alt="" mode="heightFix" v-if="privileges[index].maxbr === 999000" >
+						<img src="../../static/vip.png" alt="" mode="heightFix" v-if="privileges[index].fee === 1">
+						<text>{{item.ar[0].name}} - {{item.name}}</text>
+					</view>
 				</view>
 				<view class="iconfont icon-bofang1"></view>
 			</view>
@@ -112,17 +76,31 @@
 		
 		data() {
 			return {
-				playListId: null,
-				playList: []
+				playList: [],
+				privileges: [],
+				showPage: false
 			};
 		},
 		
 		methods: {
 			// 获取歌单详情
 			async getPlayListDetail(playListId) {
+				uni.showLoading({
+					title: '正在加载中...'
+				})
 				const res = await reqGetPlayListDetail(playListId)
 				this.playList = res.data.playlist
-				console.log(this.playList);
+				this.privileges = res.data.privileges
+				console.log(res.data);
+				uni.hideLoading()
+				this.showPage = true
+			},
+			
+			// 跳转到歌曲详情页
+			goToDetail(ids) {
+				uni.navigateTo({
+					url: `../../subpkg/detail/detail?ids=${ids}`
+				})
 			}
 		},
 		
@@ -130,7 +108,14 @@
 			// 将数字转换为千、万、亿等单位
 			numberTransform() {
 				return bigNumberTransform(this.playList.playCount)
-			}
+			},
+			
+			// 判断歌手是否有多个并进行处理
+			// singerName() {
+			// 	if(this.playList.tracks.) {
+					
+			// 	}
+			// }
 		}
 	}
 </script>
@@ -253,7 +238,7 @@
 			align-items: center;
 			margin-bottom: 65rpx;
 			.index {
-				width: 58rpx;
+				width: 70rpx;
 				height: 50rpx;
 				color: #9a9a9a;
 			}
@@ -262,10 +247,17 @@
 				.music-name {
 					font-size: 30rpx;
 					margin-bottom: 15rpx;
+					// white-space: nowrap;
+					// overflow: hidden;
+					// text-overflow: ellipsis;
 				}
 				.author {
 					font-size: 20rpx;
 					color: #8b8b8b;
+					img {
+						height: 20rpx;
+						margin-right: 5rpx;
+					}
 				}
 			}
 			.icon-bofang1 {
