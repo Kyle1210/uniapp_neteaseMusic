@@ -97,6 +97,30 @@
 			</view>
 			<!-- 列表部分 END -->
 		</view>
+		
+		<!-- 精彩评论部分 START -->
+		<view class="detail-remark">
+			<view class="head">
+				<text>精彩评论</text>
+			</view>
+			<!-- 评论列表部分 START -->
+			<view class="item">
+				<view class="avatar">
+					<img src="../../static/logo.png" alt="">
+					<view class="text">
+						<view class="name">向太阳丫</view>
+						<view class="date">2022年6月21日</view>
+						<view class="text">不添加喜欢了，有人点赞就回来听听</view>
+					</view>
+					<view class="upvote">
+						<text>8513</text>
+						<text class="iconfont icon-dianzan"></text>
+					</view>
+				</view>
+			</view>
+			<!-- 评论列表部分 END -->
+		</view>
+		<!-- 精彩评论部分 END -->
 	</view>
 </template>
 
@@ -261,6 +285,26 @@
 				color: #EFEFEF;
 				text-align: center;
 				line-height: 50rpx;
+			}
+		}
+	}
+}
+
+.detail-remark {
+	color: #FFFFFF;
+	margin-top: 75rpx;
+	padding: 0 30rpx;
+	.head {
+		color: #FFFFFF;
+	}
+	.item {
+		display: flex;
+		.avatar {
+			width: 65rpx;
+			height: 65rpx;
+			img {
+				width: 100%;
+				height: 100%;
 			}
 		}
 	}
